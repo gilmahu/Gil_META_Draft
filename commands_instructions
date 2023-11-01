@@ -15,8 +15,26 @@ This guide provides a step-by-step workflow for metagenomic analysis with Nanopo
 NanoPlot -o quality_assessment -t "Nanopore Data Quality" your_nanopore_data.fastq
 
 This generates detailed quality assessment plots and statistics for your Nanopore data.
-
 1.3. Review the NanoPlot HTML report to assess the quality of your Nanopore reads and identify potential issues.
+
+
+#Host Read Removal with Bowtie2
+Install Bowtie2:
+If you haven't already installed Bowtie2, you can typically install it using a package manager like conda:
+conda install -c bioconda bowtie2
+
+#Create a Bowtie2 Index:
+Before using Bowtie2 for host read removal, you need to create a Bowtie2 index of the host genome or sequences you want to remove.
+bowtie2-build host_genome.fasta host_index
+
+#Replace host_genome.fasta with the file containing your host genome sequences and host_index with the desired index name.
+Host Read Removal:
+
+Use Bowtie2 to align your Nanopore reads against the host genome index and output unaligned reads (i.e., reads that didn't align to the host genome).
+bowtie2 -x host_index -U your_nanopore_reads.fastq -S host_aligned.sam --un host_unaligned.fastq
+
+
+
 
 Step 2: Preprocessing and Classification with Kraken
 2.1. Install Kraken and download a Kraken database suitable for your analysis.
